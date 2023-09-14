@@ -403,6 +403,95 @@ public class StepDefinitions {
 
 En résumé, BDD encourage à définir le comportement de l'application en termes d'interactions utilisateur et d'obtenir une compréhension commune entre les parties prenantes sur ce comportement attendu. Les scénarios BDD aident à assurer que le logiciel développé correspond véritablement aux besoins et attentes des utilisateurs.
 
+# Mockito 
+Mockito est une bibliothèque de simulation populaire pour les tests unitaires en Java. Elle offre plusieurs fonctionnalités pour faciliter la création de mocks (objets simulés) et la vérification de leur comportement. Voici quelques-unes de ses principales fonctionnalités avec des exemples pour chacune d'elles :
+
+1. Création de mocks :
+
+```java
+List mockedList = mock(List.class);
+Stubs - Définir le comportement des mocks :
+```
+
+2. Stubs - Définir le comportement des mocks :
+```java
+when(mockedList.get(0)).thenReturn("first");
+assertEquals("first", mockedList.get(0));
+```
+
+3. Vérification des interactions :
+```java
+mockedList.add("one");
+verify(mockedList).add("one");
+
+4. Vérification du nombre d'interactions :
+```java
+mockedList.add("one");
+mockedList.add("two");
+verify(mockedList, times(1)).add("one");
+verify(mockedList, times(1)).add("two");
+```
+
+5. Argument matchers :
+```java
+when(mockedList.get(anyInt())).thenReturn("element");
+assertEquals("element", mockedList.get(99));
+```
+
+6. Capturing arguments :
+
+```java
+ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+mockedList.add("someString");
+verify(mockedList).add(argument.capture());
+assertEquals("someString", argument.getValue());
+```
+
+7. Stubs pour les exceptions :
+```java
+Copy code
+when(mockedList.get(99)).thenThrow(new IndexOutOfBoundsException("Index out of bounds!"));
+```
+
+8. Spying on real objects :
+```java
+List realList = new ArrayList<>();
+List spyList = spy(realList);
+when(spyList.size()).thenReturn(100);
+assertEquals(100, spyList.size());
+```
+
+9. Resetting mocks :
+```java
+mockedList.add("one");
+reset(mockedList);
+verify(mockedList, times(0)).add("one");
+```
+
+10. Callback stubbing :
+```java
+when(mockedList.get(anyInt())).thenAnswer(invocation -> {
+   int argument = (int) invocation.getArguments()[0];
+   return "position " + argument;
+});
+assertEquals("position 3", mockedList.get(3));
+```
+
+11. Vérifier qu'aucune interaction n'a eu lieu :
+```java
+verifyNoInteractions(mockedList);
+```
+
+12. Vérifier qu'aucune interaction supplémentaire n'a eu lieu :
+```java
+mockedList.add("one");
+verify(mockedList).add("one");
+verifyNoMoreInteractions(mockedList);
+```
+
+
+Ces exemples sont simplistes pour illustrer les concepts. Dans un scénario réel, Mockito est utilisé pour isoler les dépendances lors des tests unitaires et s'assurer que le code se comporte comme prévu.
+
 # Spring-boot
 **1- Modèle Person**
 ```java
